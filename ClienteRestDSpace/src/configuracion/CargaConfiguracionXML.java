@@ -39,14 +39,28 @@ import org.dom4j.io.SAXReader;
  */
 public class CargaConfiguracionXML {
 
-    private final String NOMBRE_ARCHIVO = "conf.xml";
+    /**
+     * @return El usuario
+     */
+    public Usuario getUsuario() {
+        return usuario;
+    }
 
+    /**
+     * @param usuario El usuario
+     */
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    private final String NOMBRE_ARCHIVO = "conf.xml";
+    
     /**
      * Carga el archivo de configuración con el nombre NOMBRE_ARCHIVO. Este
      * nombre debe ser una ruta absoluta o relativa.
      * @return La información del usuario.
      */
-    public Usuario cargarConfiguracion() {
+    public void cargarConfiguracion() {
         File archivo = new File(NOMBRE_ARCHIVO);
         if (archivo.exists() && archivo.canRead()) {
             try {
@@ -55,9 +69,8 @@ public class CargaConfiguracionXML {
                 String nombreUsuario = obtenerTextoNodo(documento,"//conf/user");
                 String password = obtenerTextoNodo(documento, "//conf/password");
                 
-                Usuario user = new Usuario(nombreUsuario,password);
+                setUsuario(new Usuario(nombreUsuario,password));               
                 
-                return user;
 
             } catch (DocumentException de) {
                 System.err.println("Error al parsear el archivo. Detalles :\n");
@@ -67,7 +80,7 @@ public class CargaConfiguracionXML {
             System.err.println("El archivo de configuración no existe o no puede ser leído");
         }
         
-        return null;
+        
     }
 
     /**
@@ -101,5 +114,7 @@ public class CargaConfiguracionXML {
         
         return texto;
     }
+    
+    private Usuario usuario;
 
 }

@@ -20,23 +20,43 @@
  * SOFTWARE.
  *
  */
-
-import configuracion.CargaConfiguracionXML;
-import configuracion.Usuario;
-
+package REST;
 
 /**
- * Clase para probar la carga de la configuración.
+ * Almacena una respuesta dada por un método REST
  * @author Ing. Adrián Alvarado Ramírez.
  */
-public class CargarConfiguracionXMLTest {
-    
-    public static void main(String args[]){
-        CargaConfiguracionXML cargaConf = new CargaConfiguracionXML();
-        cargaConf.cargarConfiguracion();
-        Usuario user = cargaConf.getUsuario();
-        
-        System.out.printf("El nombre de usuario es: %s y la contraseña es %s\n", user.getNombre(), user.getPassword());
+public class Respuesta {
+
+    /**
+     * @return El código de respuesta
+     */
+    public int getCodigo() {
+        return codigo;
     }
+
+    /**
+     * @param codigo El código de respuesta
+     */
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
+
+    /**
+     * @return El contenido de la respuesta
+     */
+    public String getContenido() {
+        return contenido;
+    }
+
+    /**
+     * @param contenido El contenido de la respuesta.
+     */
+    public void setContenido(String contenido) {
+        this.contenido = contenido;
+    }
+    
+    private int codigo;
+    private String contenido;
     
 }

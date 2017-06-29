@@ -21,22 +21,31 @@
  *
  */
 
-import configuracion.CargaConfiguracionXML;
-import configuracion.Usuario;
+import REST.Metodos;
+import REST.Respuesta;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 
 
 /**
- * Clase para probar la carga de la configuración.
- * @author Ing. Adrián Alvarado Ramírez.
+ * Prueba los métodos REST.
+ * @author Ing. Adrián Alvarado Ramírez
  */
-public class CargarConfiguracionXMLTest {
+public class MetodosTest {
     
     public static void main(String args[]){
-        CargaConfiguracionXML cargaConf = new CargaConfiguracionXML();
-        cargaConf.cargarConfiguracion();
-        Usuario user = cargaConf.getUsuario();
+        try{
+            URL url = new URL("http://localhost:8080/rest/test");
+            Metodos metodos = new Metodos();
+            Respuesta res = metodos.get(url);
+            
+            System.out.printf("El código de respuesta es [%d]\nEl contenido es:\n%s\n", res.getCodigo(),res.getContenido());
+            
+        }catch(MalformedURLException mfe){
+            System.err.println(mfe.toString());
+        }
         
-        System.out.printf("El nombre de usuario es: %s y la contraseña es %s\n", user.getNombre(), user.getPassword());
     }
     
 }
