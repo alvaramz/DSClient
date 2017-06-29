@@ -25,31 +25,53 @@ import REST.Metodos;
 import REST.Respuesta;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-
+import java.util.HashMap;
 
 /**
  * Prueba los métodos REST.
+ *
  * @author Ing. Adrián Alvarado Ramírez
  */
 public class MetodosTest {
-    
-    public static void main(String args[]){
-        testGET();
-        
+
+    public static void main(String args[]) {
+       testGET();
+       testPOST();
     }
 
     private static void testGET() {
-        try{
+        try {
             URL url = new URL("http://localhost:8080/rest/test");
             Metodos metodos = new Metodos();
             Respuesta res = metodos.get(url);
-            
-            System.out.printf("El código de respuesta es [%d]\nEl contenido es:\n%s\n", res.getCodigo(),res.getContenido());
-            
-        }catch(MalformedURLException mfe){
+
+            System.out.printf("El código de respuesta es [%d]\nEl contenido es:\n%s\n", res.getCodigo(), res.getContenido());
+
+        } catch (MalformedURLException mfe) {
             System.err.println(mfe.toString());
         }
     }
-    
+
+    private static void testPOST() {
+        try {
+            URL url = new URL("http://localhost:8080/rest/login");
+            Metodos metodos = new Metodos();
+
+            // curl -v -H "Content-Type: application/json" --data '{"email":"admin@gmail.com", "password":"admin"}' http://localhost:8080/rest/login
+            String data = String.format("{\"email\":\"%s\",\"password\":\"%s\"}", "admin@gmail.com", "admin");
+            HashMap<String, String> parametros = new HashMap<>();
+            parametros.put("", data);
+            
+            HashMap<String,String> properties = new HashMap<>();
+            properties.put("Content-Type", "application/json");
+
+            Respuesta res = metodos.post(url, properties, parametros);
+
+            System.out.printf("El código de respuesta es [%d]\nEl contenido es:\n%s\n", res.getCodigo(), res.getContenido());
+
+        } catch (MalformedURLException mfe) {
+            System.err.println(mfe.toString());
+        }
+    }
+
 }

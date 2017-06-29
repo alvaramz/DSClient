@@ -77,7 +77,7 @@ public class Metodos {
         return res;
     }
 
-    public Respuesta postOperation(URL pagina, HashMap<String, String> properties, HashMap<String, String> parametros) {
+    public Respuesta post(URL pagina, HashMap<String, String> properties, HashMap<String, String> parametros) {
         int codigo = -1;
         String contenido = null;
         StringBuilder buffer = null;
