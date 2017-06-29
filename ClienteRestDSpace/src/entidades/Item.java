@@ -20,53 +20,12 @@
  * SOFTWARE.
  *
  */
-package configuracion;
+package entidades;
 
 /**
- * Almacena la información del usuario en memoria.
+ * Representa un item de una colección.
  * @author Ing. Adrián Alvarado Ramírez.
  */
-public class Usuario {
-
-    /**
-     * @return El nombre de usuario.
-     */
-    public String getNombre() {
-        return nombre;
-    }
-
-    /**
-     * @param nombre El nombre de usuario.
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    /**
-     * @return La contraseña
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password La contraseña
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    /**
-     * Constructor de la clase.
-     * @param pNombre El nombre de usuario.
-     * @param pPassword La contraseña.
-     */
-    public Usuario(String pNombre, String pPassword){
-        nombre = pNombre;
-        password = pPassword;
-    }
-    
-    private String nombre;
-    private String password;
+public class Item {
     
 }

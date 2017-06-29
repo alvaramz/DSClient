@@ -20,23 +20,53 @@
  * SOFTWARE.
  *
  */
-
-import configuracion.CargaConfiguracionXML;
-import entidades.Usuario;
-
+package entidades;
 
 /**
- * Clase para probar la carga de la configuración.
+ * Almacena la información del usuario en memoria.
  * @author Ing. Adrián Alvarado Ramírez.
  */
-public class CargarConfiguracionXMLTest {
-    
-    public static void main(String args[]){
-        CargaConfiguracionXML cargaConf = new CargaConfiguracionXML();
-        cargaConf.cargarConfiguracion();
-        Usuario user = cargaConf.getUsuario();
-        
-        System.out.printf("El nombre de usuario es: %s y la contraseña es %s\n", user.getNombre(), user.getPassword());
+public class Usuario {
+
+    /**
+     * @return El nombre de usuario.
+     */
+    public String getNombre() {
+        return nombre;
     }
+
+    /**
+     * @param nombre El nombre de usuario.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * @return La contraseña
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password La contraseña
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    /**
+     * Constructor de la clase.
+     * @param pNombre El nombre de usuario.
+     * @param pPassword La contraseña.
+     */
+    public Usuario(String pNombre, String pPassword){
+        nombre = pNombre;
+        password = pPassword;
+    }
+    
+    private String nombre;
+    private String password;
     
 }

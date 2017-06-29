@@ -22,6 +22,7 @@
  */
 package configuracion;
 
+import entidades.Usuario;
 import java.io.File;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
