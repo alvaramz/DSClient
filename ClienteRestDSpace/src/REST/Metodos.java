@@ -23,10 +23,12 @@
 package REST;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 /**
  * Implementación de los métodos REST.
@@ -59,7 +61,64 @@ public class Metodos {
 
             // Se finaliza la conexión.
             urlConnection.disconnect();
-            
+
+            // Se llena el objeto respuesta
+            res = new Respuesta();
+            res.setCodigo(codigo);
+            res.setContenido(contenido);
+
+        } catch (IOException ioe) {
+            contenido = "[ERROR] Ocurrió una excepción al intentar establecer la conexión : " + ioe.toString();
+            res = new Respuesta();
+            res.setCodigo(-1);
+            res.setContenido(contenido);
+        }
+
+        return res;
+    }
+
+    public Respuesta postOperation(URL pagina, HashMap<String, String> properties, HashMap<String, String> parametros) {
+        int codigo = -1;
+        String contenido = null;
+        StringBuilder buffer = null;
+        Respuesta res = null;
+
+        try {
+            HttpURLConnection urlConnection = (HttpURLConnection) pagina.openConnection();
+            urlConnection.setRequestMethod("POST");
+
+            // Agrega las properties del request.
+            for (String clave : properties.keySet()) {
+                urlConnection.setRequestProperty(clave, properties.get(clave));
+            }
+
+            // Crea y asigna la hilera de parámetros
+            Utils utils = new Utils();
+            String hileraParametros = utils.crearHileraParametros(parametros);
+            if (hileraParametros != null) {
+                urlConnection.setDoOutput(true);
+                DataOutputStream os = new DataOutputStream(urlConnection.getOutputStream());
+                os.writeBytes(hileraParametros);
+                os.flush();
+                os.close();
+            }
+
+            urlConnection.connect();
+
+            codigo = urlConnection.getResponseCode();
+
+            // Se lee la respuesta
+            BufferedReader br = new BufferedReader(new InputStreamReader((urlConnection.getInputStream())));
+            buffer = new StringBuilder();
+            int caracter;
+            while ((caracter = br.read()) != -1) {
+                buffer.append((char) caracter);
+            }
+            contenido = buffer.toString();
+
+            // Se finaliza la conexión.
+            urlConnection.disconnect();
+
             // Se llena el objeto respuesta
             res = new Respuesta();
             res.setCodigo(codigo);

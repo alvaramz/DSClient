@@ -20,36 +20,47 @@
  * SOFTWARE.
  *
  */
+package REST;
 
-import REST.Metodos;
-import REST.Respuesta;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-
+import java.util.HashMap;
 
 /**
- * Prueba los métodos REST.
+ * Proporciona funciones utilitarias para los métodos REST.
+ *
  * @author Ing. Adrián Alvarado Ramírez
  */
-public class MetodosTest {
-    
-    public static void main(String args[]){
-        testGET();
-        
-    }
+public class Utils {
 
-    private static void testGET() {
-        try{
-            URL url = new URL("http://localhost:8080/rest/test");
-            Metodos metodos = new Metodos();
-            Respuesta res = metodos.get(url);
-            
-            System.out.printf("El código de respuesta es [%d]\nEl contenido es:\n%s\n", res.getCodigo(),res.getContenido());
-            
-        }catch(MalformedURLException mfe){
-            System.err.println(mfe.toString());
+    /**
+     * construye una hilera de parámetros para ser enviada en un request HTTP.
+     * @param parametros HasMap con los parámetros para construir la hilera.
+     * @return La hilera de parámetros construída.
+     */
+    public String crearHileraParametros(HashMap<String, String> parametros) {
+        if (parametros != null && parametros.size() >= 1) {
+            StringBuilder parametrosBuilder = new StringBuilder();
+            boolean primero = true;
+
+            for (String key : parametros.keySet()) {
+                if (primero) {
+                    primero = false;
+                } else {
+                    parametrosBuilder.append("&");
+                }
+
+                // Si el key es "", no se agrega
+                if (!key.isEmpty()) {
+                    parametrosBuilder.append(key);
+                    parametrosBuilder.append("=");
+                }
+
+                parametrosBuilder.append(parametros.get(key));
+            }
+
+            return parametrosBuilder.toString();
+        } else {
+            return null;
         }
     }
-    
+
 }
