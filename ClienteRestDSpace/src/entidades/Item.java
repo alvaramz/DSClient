@@ -22,10 +22,59 @@
  */
 package entidades;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Representa un item de una colección.
  * @author Ing. Adrián Alvarado Ramírez.
  */
 public class Item {
+
+    /**
+     * @return El nombre.
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * @param nombre El nombre.
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * @return Los metadatos.
+     */
+    public ArrayList<HashMap<String,String>> getMetadatos() {
+        return metadatos;
+    }
+
+    /**
+     * @param metadatos Los metadatos.
+     */
+    public void setMetadatos(ArrayList<HashMap<String,String>> metadatos) {
+        this.metadatos = metadatos;
+    }
+
+    /**
+     * @return El bitstream
+     */
+    public byte[] getBitstream() {
+        return bitstream;
+    }
+
+    /**
+     * @param bitstream El bitstream.
+     */
+    public void setBitstream(byte[] bitstream) {
+        this.bitstream = bitstream;
+    }
+    
+    private String nombre;  
+    private ArrayList<HashMap<String,String>> metadatos;
+    private byte[] bitstream;
     
 }
