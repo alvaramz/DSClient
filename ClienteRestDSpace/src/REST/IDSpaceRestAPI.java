@@ -38,7 +38,7 @@ public interface IDSpaceRestAPI {
      * @param rutaBaseREST
      * @return Respuesta con el resultado del request.
      */
-    public Respuesta test(String rutaBaseREST);
+    public Respuesta test();
 
     /**
      * Elejcuta la operación login.
