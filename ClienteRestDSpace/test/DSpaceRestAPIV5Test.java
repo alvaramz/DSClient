@@ -23,6 +23,7 @@
 
 import REST.DSpaceRestAPIV5;
 import REST.Respuesta;
+import entidades.Item;
 import entidades.Usuario;
 
 /**
@@ -35,7 +36,7 @@ public class DSpaceRestAPIV5Test {
     private final static String RUTA_BASE = "http://localhost:8080/rest";
     private final static DSpaceRestAPIV5 rest = new DSpaceRestAPIV5(RUTA_BASE);
     private static String token = "";
-
+    
     public static void main(String args[]) {
 
         testTest();
@@ -47,10 +48,20 @@ public class DSpaceRestAPIV5Test {
         obtenerComunidadTest();
 
         obtenerColeccionTest();
+        
+        //crearItem();
+        // Se usa el id 1 de item para el resto de pruebas.
 
         // Cierra la sesión al finalizar.
         logoutTest();
 
+    }
+
+    private static void crearItem() {
+        Item item = new Item();
+        item.setNombre("Item de prueba");
+        Respuesta res = rest.crearItem(item, 1, token);
+        imprimirRespuesta(res);
     }
 
     private static void obtenerColeccionTest() {

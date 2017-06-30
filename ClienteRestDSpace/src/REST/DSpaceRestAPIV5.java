@@ -184,7 +184,7 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
 
     @Override
     public Respuesta obtenerColeccion(int id) {
-         Respuesta res = null;
+        Respuesta res = null;
 
         try {
             URL urlTest = new URL(rutaBaseREST + "/collections/" + id);
@@ -206,18 +206,53 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Crea un item en la colección especificada:
+     *
+     * Ejemplo: curl -v -X POST -H "Content-Type: application/json" -H
+     * "rest-dspace-token:289045f9-ff6d-41c5-80b0-010a8119f5c4" --data
+     * '{"name":"Prueba","type":"item","expand":["metadata","parentCollection","parentCollectionList","parentCommunityList","bitstreams","all"],"parentCollection":null,"parentCollectionList":null,"parentCommunityList":null,"bitstreams":null,"archived":"true","withdrawn":"false"}'
+     * https://localhost:8443/rest/collections/2/items --insecure 
+     * 
+     * Cuando se crea el item, si todo sale bien (con un 200 OK), se retorna el
+     * item (xml) del cual se obtiene el id necesario para introducir los metadatos.
+     *
+     * @param item El item, con el nombre que se va a utilizar.
+     * @param colectionId El identificador de la colección.
+     * @param token El token del usuario.
+     * @return Respuesta con el resultado, si está correcto, retorna un 200 y el item creado en forma de xml.
+     */
     @Override
-    public Respuesta crearItem(Item item, int colectionId) {
+    public Respuesta crearItem(Item item, int colectionId, String token) {
+        Respuesta res = null;
+
+        try {
+            URL url = new URL(rutaBaseREST + "/collections/" + colectionId + "/items");
+
+            String data = crearDataCrearItem(item.getNombre());
+            HashMap<String, String> parametros = new HashMap<>();
+            parametros.put("", data);
+
+            HashMap<String, String> properties = new HashMap<>();
+            properties.put("Content-Type", "application/json");
+            properties.put("rest-dspace-token", token);
+
+            res = met.post(url, properties, parametros);
+            return res;
+        } catch (MalformedURLException mfe) {
+            System.err.println(mfe.toString());
+        }
+
+        return res;
+    }
+
+    @Override
+    public Respuesta agregarMetadatos(Item item, int itemId, String token) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Respuesta agregarMetadatos(Item item, int itemId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Respuesta agregarBitStream(Item item, int itemId) {
+    public Respuesta agregarBitStream(Item item, int itemId, String token) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -253,6 +288,17 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
         }
 
         return res;
+    }
+
+    /**
+     * Retorna la hilera para el data de crarItem.
+     *
+     * @param nombre El nombre del item.
+     * @return Hilera JSON para el data del item.
+     */
+    private String crearDataCrearItem(String nombre) {
+        String formato = "{\"name\":\"%s\",\"type\":\"item\",\"expand\":[\"metadata\",\"parentCollection\",\"parentCollectionList\",\"parentCommunityList\",\"bitstreams\",\"all\"],\"parentCollection\":null,\"parentCollectionList\":null,\"parentCommunityList\":null,\"bitstreams\":null,\"archived\":\"true\",\"withdrawn\":\"false\"}";
+        return String.format(formato, nombre);
     }
 
 }

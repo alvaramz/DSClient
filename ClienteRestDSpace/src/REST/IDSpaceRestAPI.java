@@ -86,28 +86,31 @@ public interface IDSpaceRestAPI {
      *
      * @param item El item a agregar a la colección.
      * @param colectionId El identificador de la colección.
+     * @param token El token del usuario.
      * @return Respuesta de la operación. Si la operación se efectúa sin
      * problemas, el contenido retornado en la respuesta es el id del item.
      */
-    public Respuesta crearItem(Item item, int colectionId);
+    public Respuesta crearItem(Item item, int colectionId, String token);
 
     /**
      * Agrega los metadatos a un item indicado por parámetro.
      *
      * @param item El item, con la información de los metadatos a agregar.
      * @param itemId El identificador del item.
+     * @param token El toeken el usurio autenticado.
      * @return Respuesta con el resultado de la operación.
      */
-    public Respuesta agregarMetadatos(Item item, int itemId);
+    public Respuesta agregarMetadatos(Item item, int itemId, String token);
 
     /**
      * Agrega un bitstream a un item identificado por parámetro.
      *
      * @param item El item, con el bitstream.
      * @param itemId El identificador del item.
+     * @param token El token del usuario autenticado.
      * @return Respuesta de la operación.
      */
-    public Respuesta agregarBitStream(Item item, int itemId);
+    public Respuesta agregarBitStream(Item item, int itemId, String token);
     
     /**
      * 
