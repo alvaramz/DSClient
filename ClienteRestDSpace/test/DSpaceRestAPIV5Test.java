@@ -44,6 +44,8 @@ public class DSpaceRestAPIV5Test {
 
         statusTest();
         
+        Respuesta res = rest.obtenerComunidad(1);
+        imprimirRespuesta(res);
         
         // Cierra la sesión al finalizar.
         logoutTest();

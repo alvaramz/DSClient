@@ -155,9 +155,31 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
         return res;
     }
 
+    /**
+     * Obtiene una comunidad dado un id especificado. Si no se especifica el
+     * Accept, la retorna en forma de JSON. En esta implementación, se obtiene
+     * un XML.
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Respuesta obtenerComunidad(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Respuesta res = null;
+
+        try {
+            URL urlTest = new URL(rutaBaseREST + "/communities/" + id);
+
+            // Se definie el accept para que reciba un XML.
+            HashMap<String, String> properties = new HashMap<>();
+            properties.put("Accept", "application/xml");
+
+            return met.get(urlTest, properties);
+        } catch (MalformedURLException mfe) {
+            System.err.printf("Error al ejecutar la operación obtenerComunidad, detalle:\n%s\n", mfe.toString());
+        }
+
+        return res;
     }
 
     @Override
@@ -206,7 +228,6 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
         try {
             URL url = new URL(rutaBaseREST + "/logout");
 
-          
             HashMap<String, String> properties = new HashMap<>();
             properties.put("Content-Type", "application/json");
             properties.put("rest-dspace-token", token);
