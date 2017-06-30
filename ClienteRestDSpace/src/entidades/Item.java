@@ -23,7 +23,7 @@
 package entidades;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Representa un item de una colección.
@@ -48,14 +48,14 @@ public class Item {
     /**
      * @return Los metadatos.
      */
-    public ArrayList<HashMap<String,String>> getMetadatos() {
+    public ArrayList<LinkedHashMap<String,String>> getMetadatos() {
         return metadatos;
     }
 
     /**
      * @param metadatos Los metadatos.
      */
-    public void setMetadatos(ArrayList<HashMap<String,String>> metadatos) {
+    public void setMetadatos(ArrayList<LinkedHashMap<String,String>> metadatos) {
         this.metadatos = metadatos;
     }
 
@@ -74,7 +74,7 @@ public class Item {
     }
     
     private String nombre;  
-    private ArrayList<HashMap<String,String>> metadatos;
+    private ArrayList<LinkedHashMap<String,String>> metadatos;
     private byte[] bitstream;
     
 }

@@ -27,6 +27,7 @@ import entidades.Usuario;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Proporciona la implementación del API REST para conectarse con DSpace versión
@@ -212,15 +213,17 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
      * Ejemplo: curl -v -X POST -H "Content-Type: application/json" -H
      * "rest-dspace-token:289045f9-ff6d-41c5-80b0-010a8119f5c4" --data
      * '{"name":"Prueba","type":"item","expand":["metadata","parentCollection","parentCollectionList","parentCommunityList","bitstreams","all"],"parentCollection":null,"parentCollectionList":null,"parentCommunityList":null,"bitstreams":null,"archived":"true","withdrawn":"false"}'
-     * https://localhost:8443/rest/collections/2/items --insecure 
-     * 
+     * https://localhost:8443/rest/collections/2/items --insecure
+     *
      * Cuando se crea el item, si todo sale bien (con un 200 OK), se retorna el
-     * item (xml) del cual se obtiene el id necesario para introducir los metadatos.
+     * item (xml) del cual se obtiene el id necesario para introducir los
+     * metadatos.
      *
      * @param item El item, con el nombre que se va a utilizar.
      * @param colectionId El identificador de la colección.
      * @param token El token del usuario.
-     * @return Respuesta con el resultado, si está correcto, retorna un 200 y el item creado en forma de xml.
+     * @return Respuesta con el resultado, si está correcto, retorna un 200 y el
+     * item creado en forma de xml.
      */
     @Override
     public Respuesta crearItem(Item item, int colectionId, String token) {
@@ -248,7 +251,26 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
 
     @Override
     public Respuesta agregarMetadatos(Item item, int itemId, String token) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Respuesta res = null;
+
+        try {
+            URL url = new URL(rutaBaseREST + "/items/" + itemId + "/metadata");
+
+            String data = crearHileraMetadatos(item);
+            LinkedHashMap<String, String> parametros = new LinkedHashMap<>();
+            parametros.put("", data);
+
+            LinkedHashMap<String, String> properties = new LinkedHashMap<>();
+            properties.put("Content-Type", "application/json");
+            properties.put("rest-dspace-token", token);
+
+            res = met.post(url, properties, parametros);
+            return res;
+        } catch (MalformedURLException mfe) {
+            System.err.println(mfe.toString());
+        }
+
+        return res;
     }
 
     @Override
@@ -299,6 +321,50 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
     private String crearDataCrearItem(String nombre) {
         String formato = "{\"name\":\"%s\",\"type\":\"item\",\"expand\":[\"metadata\",\"parentCollection\",\"parentCollectionList\",\"parentCommunityList\",\"bitstreams\",\"all\"],\"parentCollection\":null,\"parentCollectionList\":null,\"parentCommunityList\":null,\"bitstreams\":null,\"archived\":\"true\",\"withdrawn\":\"false\"}";
         return String.format(formato, nombre);
+    }
+
+    /**
+     * Crea la hilera de los metadatos a partir de un item determinado.
+     *
+     * @param item El item.
+     * @return Hilera Json con los metadados, para ser utilizados en el API
+     * REST.
+     */
+    private String crearHileraMetadatos(Item item) {
+        StringBuilder sBMetadatos = new StringBuilder();
+        boolean esPrimero = true;
+
+        sBMetadatos.append("[");
+
+        for (LinkedHashMap<String, String> metadato : item.getMetadatos()) {
+            if (esPrimero) {
+                esPrimero = false;
+            } else {
+                sBMetadatos.append(",");
+            }
+
+            sBMetadatos.append("{");
+            boolean esPrimeroEnMV = true;
+            
+            for(String clave : metadato.keySet()){
+                if(esPrimeroEnMV){
+                    esPrimeroEnMV = false;
+                }else{
+                    sBMetadatos.append(",");
+                }
+                    
+               sBMetadatos.append(String.format("\"%s\"", clave));
+               sBMetadatos.append(":");
+               sBMetadatos.append(String.format("\"%s\"", metadato.get(clave)));
+               
+            }
+                    
+            sBMetadatos.append("}");
+        }
+
+        sBMetadatos.append("]");
+
+        return sBMetadatos.toString();
     }
 
 }

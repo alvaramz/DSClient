@@ -25,6 +25,10 @@ import REST.DSpaceRestAPIV5;
 import REST.Respuesta;
 import entidades.Item;
 import entidades.Usuario;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Métodos para probar la funcionalidad de la clase DSpaceRestAPIV5.java
@@ -51,6 +55,26 @@ public class DSpaceRestAPIV5Test {
         
         //crearItem();
         // Se usa el id 1 de item para el resto de pruebas.
+        System.out.println("--------------Probando agregar metadatos----------");
+        Item item = new Item();
+        item.setNombre("Item de prueba");
+        LinkedHashMap<String, String> tituloEspanol = new LinkedHashMap<String,String>();
+        tituloEspanol.put("key", "dc.title");
+        tituloEspanol.put("language", "es");
+        tituloEspanol.put("value",  new String("Título en español".getBytes(), Charset.availableCharsets().get("ISO-8859-1")));
+        
+        LinkedHashMap<String, String> tituloIngles = new LinkedHashMap<String,String>();
+        tituloIngles.put("key", "dc.title");
+        tituloIngles.put("language", "en");
+        tituloIngles.put("value", "Title in english");
+        
+        item.setMetadatos(new ArrayList<LinkedHashMap<String, String>>());
+        item.getMetadatos().add(tituloEspanol);
+        item.getMetadatos().add(tituloIngles);
+        
+        Respuesta res = rest.agregarMetadatos(item, 1, token);
+        imprimirRespuesta(res);
+        System.out.println("-------------Fin de agregar metadatos----");
 
         // Cierra la sesión al finalizar.
         logoutTest();
