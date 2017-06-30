@@ -43,13 +43,24 @@ public class DSpaceRestAPIV5Test {
         loginTest();
 
         statusTest();
-        
-        Respuesta res = rest.obtenerComunidad(1);
-        imprimirRespuesta(res);
-        
+
+        obtenerComunidadTest();
+
+        obtenerColeccionTest();
+
         // Cierra la sesión al finalizar.
         logoutTest();
 
+    }
+
+    private static void obtenerColeccionTest() {
+        Respuesta res = rest.obtenerColeccion(1);
+        imprimirRespuesta(res);
+    }
+
+    private static void obtenerComunidadTest() {
+        Respuesta res = rest.obtenerComunidad(1);
+        imprimirRespuesta(res);
     }
 
     private static void logoutTest() {

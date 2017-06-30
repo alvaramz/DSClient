@@ -184,7 +184,21 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
 
     @Override
     public Respuesta obtenerColeccion(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Respuesta res = null;
+
+        try {
+            URL urlTest = new URL(rutaBaseREST + "/collections/" + id);
+
+            // Se definie el accept para que reciba un XML.
+            HashMap<String, String> properties = new HashMap<>();
+            properties.put("Accept", "application/xml");
+
+            return met.get(urlTest, properties);
+        } catch (MalformedURLException mfe) {
+            System.err.printf("Error al ejecutar la operación obtenerColeccion, detalle:\n%s\n", mfe.toString());
+        }
+
+        return res;
     }
 
     @Override
