@@ -108,5 +108,14 @@ public interface IDSpaceRestAPI {
      * @return Respuesta de la operación.
      */
     public Respuesta agregarBitStream(Item item, int itemId);
+    
+    /**
+     * 
+     * Cierra la sesión de un usuario especificado por un token.
+     * 
+     * @param token El toke del usuario que se va a cerrar.
+     * @return 
+     */
+    public Respuesta logout(String token);
 
 }

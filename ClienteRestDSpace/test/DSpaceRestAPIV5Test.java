@@ -44,7 +44,17 @@ public class DSpaceRestAPIV5Test {
 
         statusTest();
         
+        
+        // Cierra la sesión al finalizar.
+        logoutTest();
 
+    }
+
+    private static void logoutTest() {
+        Respuesta res = rest.logout(token);
+        imprimirRespuesta(res);
+        res = rest.status(token);
+        imprimirRespuesta(res);
     }
 
     private static void statusTest() {
