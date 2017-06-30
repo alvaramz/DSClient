@@ -43,7 +43,7 @@ public class MetodosTest {
         try {
             URL url = new URL("http://localhost:8080/rest/test");
             Metodos metodos = new Metodos();
-            Respuesta res = metodos.get(url);
+            Respuesta res = metodos.get(url, null);
 
             System.out.printf("El código de respuesta es [%d]\nEl contenido es:\n%s\n", res.getCodigo(), res.getContenido());
 

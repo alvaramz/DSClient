@@ -54,7 +54,7 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
         
        try{
            URL urlTest = new URL(rutaBaseREST + "/test");
-           return met.get(urlTest);
+           return met.get(urlTest, null);
        }catch(MalformedURLException mfe){
            System.err.printf("Error al ejecutar la operación test, detalle:\n%s\n", mfe.toString());
        }
@@ -88,7 +88,24 @@ public class DSpaceRestAPIV5 implements IDSpaceRestAPI {
 
     @Override
     public Respuesta status(String token) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         Respuesta res = null;
+        
+        try {
+            URL url = new URL(rutaBaseREST + "/status");
+                          
+            HashMap<String,String> properties = new HashMap<>();
+            properties.put("Content-Type", "application/json");
+            properties.put("Accept", "application/xml"); // También se puede application/json
+            properties.put("rest-dspace-token", token);
+            
+
+            res = met.get(url, properties);
+            return res;
+        } catch (MalformedURLException mfe) {
+            System.err.println(mfe.toString());
+        }
+        
+        return res;
     }
 
     @Override

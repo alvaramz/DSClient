@@ -37,7 +37,7 @@ import java.util.HashMap;
  */
 public class Metodos {
 
-    public Respuesta get(URL pUrl) {
+    public Respuesta get(URL pUrl, HashMap<String, String> properties) {
         int codigo = -1;
         String contenido = null;
         StringBuilder buffer = null;
@@ -46,6 +46,14 @@ public class Metodos {
         try {
             HttpURLConnection urlConnection = (HttpURLConnection) pUrl.openConnection();
             urlConnection.setRequestMethod("GET");
+            
+             // Agrega las properties del request.
+            if (properties != null) {
+                for (String clave : properties.keySet()) {
+                    urlConnection.setRequestProperty(clave, properties.get(clave));
+                }
+            }
+            
             urlConnection.connect();
 
             codigo = urlConnection.getResponseCode();
@@ -88,19 +96,23 @@ public class Metodos {
             urlConnection.setRequestMethod("POST");
 
             // Agrega las properties del request.
-            for (String clave : properties.keySet()) {
-                urlConnection.setRequestProperty(clave, properties.get(clave));
+            if (properties != null) {
+                for (String clave : properties.keySet()) {
+                    urlConnection.setRequestProperty(clave, properties.get(clave));
+                }
             }
 
             // Crea y asigna la hilera de parámetros
-            Utils utils = new Utils();
-            String hileraParametros = utils.crearHileraParametros(parametros);
-            if (hileraParametros != null) {
-                urlConnection.setDoOutput(true);
-                DataOutputStream os = new DataOutputStream(urlConnection.getOutputStream());
-                os.writeBytes(hileraParametros);
-                os.flush();
-                os.close();
+            if (parametros != null) {
+                Utils utils = new Utils();
+                String hileraParametros = utils.crearHileraParametros(parametros);
+                if (hileraParametros != null) {
+                    urlConnection.setDoOutput(true);
+                    DataOutputStream os = new DataOutputStream(urlConnection.getOutputStream());
+                    os.writeBytes(hileraParametros);
+                    os.flush();
+                    os.close();
+                }
             }
 
             urlConnection.connect();

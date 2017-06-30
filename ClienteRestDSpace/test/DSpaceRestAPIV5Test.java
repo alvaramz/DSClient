@@ -31,33 +31,49 @@ import entidades.Usuario;
  * @author Ing. Adrián Alvarado Ramírez.
  */
 public class DSpaceRestAPIV5Test {
-    
+
     private final static String RUTA_BASE = "http://localhost:8080/rest";
-    private final static  DSpaceRestAPIV5 rest = new DSpaceRestAPIV5(RUTA_BASE);
+    private final static DSpaceRestAPIV5 rest = new DSpaceRestAPIV5(RUTA_BASE);
+    private static String token = "";
 
     public static void main(String args[]) {
 
         testTest();
-        
+
         loginTest();
 
+        statusTest();
+        
+
+    }
+
+    private static void statusTest() {
+        Respuesta res = rest.status(token);
+        imprimirRespuesta(res);
+        res = rest.status("");
+        imprimirRespuesta(res);
     }
 
     private static void loginTest() {
-        Usuario usuario = new Usuario("admin@gmail.com","admin");
+        Usuario usuario = new Usuario("admin@gmail.com", "admin");
         Respuesta res = rest.login(usuario);
         imprimirRespuesta(res);
+
+        if (res != null && res.getCodigo() == 200) {
+            token = res.getContenido();
+        }
+
     }
 
-    private static void testTest() {       
+    private static void testTest() {
         Respuesta res = rest.test();
         imprimirRespuesta(res);
     }
-    
-    private static void imprimirRespuesta(Respuesta res){
-        if(res != null){
-            System.out.printf("El código retornado es: [%d]\nEl contenido es:\n%s\n", res.getCodigo(),res.getContenido());
-        }else{
+
+    private static void imprimirRespuesta(Respuesta res) {
+        if (res != null) {
+            System.out.printf("El código retornado es: [%d]\nEl contenido es:\n%s\n", res.getCodigo(), res.getContenido());
+        } else {
             System.err.print("El sistema retornó una respuesta null");
         }
     }
